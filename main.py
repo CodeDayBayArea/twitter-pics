@@ -8,9 +8,9 @@ from PIL import Image
 load_dotenv()
 
 auth = tweepy.OAuthHandler(os.environ.get(
-    "CD_CONSUMER_KEY"), os.environ.get("CD_CONSUMER_SECRET"))
-auth.set_access_token(os.environ.get("CD_API_TOKEN"),
-                      os.environ.get("CD_API_SECRET"))
+    "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
+auth.set_access_token(os.environ.get("API_TOKEN"),
+                      os.environ.get("API_SECRET"))
 
 api = tweepy.API(auth)
 
@@ -34,7 +34,7 @@ def getImage():
 
         background = Image.open("sketch.png").convert("RGBA")
         width, height = background.size
-        foreground = Image.open("stamp.png").convert("RGBA")
+        foreground = Image.open("stamp3.png").convert("RGBA")
         foreground = foreground.resize(
             (width, int(150*(height/width))))
         background.paste(foreground, (0, 0), mask=foreground)
@@ -46,10 +46,10 @@ def getImage():
 
 
 def postTweet():
-    media = api.media_upload('./sketch.png')
+    getImage()
+    media = api.media_upload('./newsketch.png')
     api.update_status("CodeDay", media_ids=[media.media_id_string])
 
 
 if __name__ == "__main__":
-    # postTweet()
-    getImage()
+    postTweet()
