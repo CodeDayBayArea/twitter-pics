@@ -1,18 +1,18 @@
-# import tweepy
-# from dotenv import load_dotenv
+import tweepy
+from dotenv import load_dotenv
 import os
 from turtle import back
 import cv2
 import time
 from PIL import Image
-# load_dotenv()
+load_dotenv()
 
-# auth = tweepy.OAuthHandler(os.environ.get(
-#     "CD_CONSUMER_KEY"), os.environ.get("CD_CONSUMER_SECRET"))
-# auth.set_access_token(os.environ.get("CD_API_TOKEN"),
-#                       os.environ.get("CD_API_SECRET"))
+auth = tweepy.OAuthHandler(os.environ.get(
+    "CD_CONSUMER_KEY"), os.environ.get("CD_CONSUMER_SECRET"))
+auth.set_access_token(os.environ.get("CD_API_TOKEN"),
+                      os.environ.get("CD_API_SECRET"))
 
-# api = tweepy.API(auth)
+api = tweepy.API(auth)
 
 
 def getImage():
@@ -36,10 +36,10 @@ def getImage():
         width, height = background.size
         foreground = Image.open("stamp.png").convert("RGBA")
         foreground = foreground.resize(
-            (width, int(150*(height/width))), Image.ANTIALIAS)
+            (width, int(150*(height/width))))
         background.paste(foreground, (0, 0), mask=foreground)
         background.save("newsketch.png")
-        # break
+        break
 
     cap.release()
     cv2.destroyAllWindows()
