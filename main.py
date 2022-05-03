@@ -14,20 +14,6 @@ api = tweepy.API(auth)
 
 
 def getImage():
-    cap = cv2.VideoCapture(1)
-    while(True):
-        ret, frame = cap.read()
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
-
-        cv2.imshow('frame', rgb)
-        out = cv2.imwrite('capture.jpg', frame)
-        break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-
-def getImage():
     cap = cv2.VideoCapture(0)
     while(True):
         ret, frame = cap.read()
