@@ -34,7 +34,7 @@ def getImage():
 
         background = Image.open("sketch.png").convert("RGBA")
         width, height = background.size
-        foreground = Image.open("stamp3.png").convert("RGBA")
+        foreground = Image.open("stamp.png").convert("RGBA")
         foreground = foreground.resize(
             (width, int(150*(height/width))))
         background.paste(foreground, (0, 0), mask=foreground)
