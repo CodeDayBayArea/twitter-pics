@@ -4,7 +4,8 @@ import os
 # from turtle import back
 import cv2
 import time
-from PIL import Image
+from PIL import Image, ImageTk
+import tkinter as tk
 # load_dotenv()
 
 # auth = tweepy.OAuthHandler(os.environ.get(
@@ -40,10 +41,48 @@ def getImage():
 
     cap.release()
     cv2.destroyAllWindows()
-
+def test():
+    pass
 
 def postTweet():
-    getImage()
+    # getImage()
+   w1=tk.Tk()
+#    w1.attributes('-fullscreen', True)
+   w1.title("Sketchy")
+   w1.geometry("480x320")  
+   for i in range(3):
+    w1.columnconfigure(i, weight=1)
+   w1.rowconfigure(1, weight=1)
+#    bottomFrame = tk.Frame(w1)
+#    bottomFrame.pack(side=tk.BOTTOM)
+   # Width, height in pixels
+
+
+#    img = Image.open("./assets/birdy.png")
+#    resized_image= img.resize((40,40), Image.ANTIALIAS)
+#    photo = ImageTk.PhotoImage(resized_image)
+#    bird = tk.Button(w1, text="Post to Twitter", image=photo, width=50, height=50)
+   bird = tk.Button(w1, text="Post to Twitter")
+   bird.grid(row=2, column=1)
+#    bird.pack()
+
+#    img = Image.open("./assets/retake.png")
+#    resized_image= img.resize((40,40), Image.ANTIALIAS)
+#    photo = ImageTk.PhotoImage(resized_image)
+   retake = tk.Button(w1, text="Retake")
+   retake.grid(row=2, column=2)
+
+#    retake.pack()
+
+#    img = Image.open("./assets/printer.png")
+#    resized_image= img.resize((40,40), Image.ANTIALIAS)
+#    photo = ImageTk.PhotoImage(resized_image)
+   printer = tk.Button(w1, text="Print photo")
+   printer.grid(row=2, column=3)
+
+#    printer.pack()
+
+   w1.mainloop()
     # media = api.media_upload('./newsketch.png')
     # api.update_status("CodeDay", media_ids=[media.media_id_string])
 
