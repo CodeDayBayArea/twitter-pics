@@ -1,18 +1,18 @@
 import tweepy
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
-from turtle import back
+# from turtle import back
 import cv2
 import time
 from PIL import Image
-load_dotenv()
+# load_dotenv()
 
-auth = tweepy.OAuthHandler(os.environ.get(
-    "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
-auth.set_access_token(os.environ.get("API_TOKEN"),
-                      os.environ.get("API_SECRET"))
+# auth = tweepy.OAuthHandler(os.environ.get(
+#     "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
+# auth.set_access_token(os.environ.get("API_TOKEN"),
+#                       os.environ.get("API_SECRET"))
 
-api = tweepy.API(auth)
+# api = tweepy.API(auth)
 
 
 def getImage():
@@ -21,10 +21,9 @@ def getImage():
         ret, frame = cap.read()
         time.sleep(2)
 
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
 
-        cv2.imshow('frame', rgb)
-        image = rgb
+        cv2.imshow('frame', frame)
+        image = frame
         grey_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         invert = cv2.bitwise_not(grey_img)
         blur = cv2.GaussianBlur(invert, (21, 21), 0)
@@ -47,8 +46,8 @@ def getImage():
 
 def postTweet():
     getImage()
-    media = api.media_upload('./newsketch.png')
-    api.update_status("CodeDay", media_ids=[media.media_id_string])
+    # media = api.media_upload('./newsketch.png')
+    # api.update_status("CodeDay", media_ids=[media.media_id_string])
 
 
 if __name__ == "__main__":
