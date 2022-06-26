@@ -21,7 +21,7 @@ w1 = tk.Tk()
 w1.title("Sketchy")
 w1.geometry("480x320")
 label = tk.Label(w1)
-label.grid(row=0, column=3)
+label.grid(row=0, column=1, sticky='nesw')
 cap = cv2.VideoCapture(0)
 
 
@@ -72,18 +72,18 @@ def showWindow():
 
     #    print(LE_IMAGE)
 
-    for i in range(6):
+    for i in range(4):
         w1.columnconfigure(i, weight=1)
     w1.rowconfigure(1, weight=1)
 
     bird = tk.Button(w1, text="Post to Twitter", command=postTweet)
-    bird.grid(row=2, column=3, sticky='nesw')
+    bird.grid(row=2, column=2, sticky='nesw')
 
     # retake = tk.Button(w1, text="Retake")
     # retake.grid(row=2, column=1, sticky='nesw')
 
     printer = tk.Button(w1, text="Print photo")
-    printer.grid(row=2, column=4, sticky='nesw')
+    printer.grid(row=2, column=1, sticky='nesw')
 
     updateLabel()
 
