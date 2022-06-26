@@ -53,7 +53,6 @@ def getImage():
 
 def updateLabel():
     LE_IMAGE=getImage()
-    print("hi")
     label.imgtk = LE_IMAGE
     label.configure(image=LE_IMAGE)
    # Repeat after an interval to capture continiously
