@@ -1,12 +1,15 @@
 import tweepy
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
+import smtplib
+from email.message import EmailMessage
 import cv2
 import time
 from PIL import Image, ImageTk
 import tkinter as tk
+import imghdr
 # from __future__ import print_function
-# load_dotenv()
+load_dotenv()
 
 # auth = tweepy.OAuthHandler(os.environ.get(
 #     "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
@@ -15,7 +18,10 @@ import tkinter as tk
 
 # api = tweepy.API(auth)
 
-# LE_IMAGE = None
+
+EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
 
 w1 = tk.Tk()
 w1.title("Sketchy")
@@ -26,10 +32,7 @@ cap = cv2.VideoCapture(0)
 
 
 def getImage():
-    # while(True):
-    # time.sleep(1)
     ret, frame = cap.read()
-    # cv2.imshow('frame', frame)
 
     image = frame
     grey_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -46,10 +49,6 @@ def getImage():
     background.save("main.png")
 
     return ImageTk.PhotoImage((background))
-    # break
-
-    # cap.release()
-    # cv2.destroyAllWindows()
 
 
 def updateLabel():
@@ -65,12 +64,24 @@ def postTweet():
     api.update_status("CodeDay", media_ids=[media.media_id_string])
 
 
+def printPhoto():
+    msg = EmailMessage()
+    msg['Subject'] = 'New Photo!'
+    msg['From'] = EMAIL_ADDRESS
+    msg['To'] = EMAIL_ADDRESS
+    msg.set_content('Here is your new photo!')
+
+    with open("main.png", 'rb') as f:
+        file_data = f.read()
+        file_type = imghdr.what(f.name)
+    msg.add_attachment(file_data, maintype='image', subtype=file_type)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        smtp.send_message(msg)
+
+
 def showWindow():
-
-    #    while True:
-    #    while True:
-
-    #    print(LE_IMAGE)
 
     for i in range(4):
         w1.columnconfigure(i, weight=1)
@@ -82,16 +93,11 @@ def showWindow():
     # retake = tk.Button(w1, text="Retake")
     # retake.grid(row=2, column=1, sticky='nesw')
 
-    printer = tk.Button(w1, text="Print photo")
+    printer = tk.Button(w1, text="Print photo", command=printPhoto)
     printer.grid(row=2, column=1, sticky='nesw')
 
     updateLabel()
 
-
-#    label=tk.Label(w1,image=LE_IMAGE).pack()
-
-
-#    updateLabel(label, LE_IMAGE)
     w1.mainloop()
 
 
