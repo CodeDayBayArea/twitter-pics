@@ -56,7 +56,7 @@ def updateLabel():
     label.imgtk = LE_IMAGE
     label.configure(image=LE_IMAGE)
    # Repeat after an interval to capture continiously
-    label.after(20, updateLabel)
+    label.after(5, updateLabel)
 
 
 def postTweet():
