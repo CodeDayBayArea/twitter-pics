@@ -8,18 +8,18 @@ import time
 from PIL import Image, ImageTk
 import tkinter as tk
 import imghdr
-# from __future__ import print_function
 load_dotenv()
 
-# auth = tweepy.OAuthHandler(os.environ.get(
-#     "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
-# auth.set_access_token(os.environ.get("API_TOKEN"),
-#                       os.environ.get("API_SECRET"))
+auth = tweepy.OAuthHandler(os.environ.get(
+    "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
+auth.set_access_token(os.environ.get("API_TOKEN"),
+                      os.environ.get("API_SECRET"))
 
-# api = tweepy.API(auth)
+api = tweepy.API(auth)
 
 
 EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
+TO_ADDRESS = os.environ.get("TO_ADDRESS")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 
@@ -68,7 +68,7 @@ def printPhoto():
     msg = EmailMessage()
     msg['Subject'] = 'New Photo!'
     msg['From'] = EMAIL_ADDRESS
-    msg['To'] = EMAIL_ADDRESS
+    msg['To'] = TO_ADDRESS
     msg.set_content('Here is your new photo!')
 
     with open("main.png", 'rb') as f:
@@ -76,7 +76,7 @@ def printPhoto():
         file_type = imghdr.what(f.name)
     msg.add_attachment(file_data, maintype='image', subtype=file_type)
 
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+    with smtplib.SMTP_SSL('smtp.mailgun.org', 465) as smtp:
         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
         smtp.send_message(msg)
 
@@ -90,8 +90,8 @@ def showWindow():
     bird = tk.Button(w1, text="Post to Twitter", command=postTweet)
     bird.grid(row=2, column=2, sticky='nesw')
 
-    # retake = tk.Button(w1, text="Retake")
-    # retake.grid(row=2, column=1, sticky='nesw')
+    retake = tk.Button(w1, text="Retake")
+    retake.grid(row=2, column=1, sticky='nesw')
 
     printer = tk.Button(w1, text="Print photo", command=printPhoto)
     printer.grid(row=2, column=1, sticky='nesw')
