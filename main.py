@@ -7,15 +7,18 @@ import cv2
 import time
 from PIL import Image, ImageTk
 import tkinter as tk
+from math import floor
 import imghdr
 load_dotenv()
 
-auth = tweepy.OAuthHandler(os.environ.get(
-    "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
-auth.set_access_token(os.environ.get("API_TOKEN"),
-                      os.environ.get("API_SECRET"))
+scale_factor = 0.58
 
-api = tweepy.API(auth)
+# auth = tweepy.OAuthHandler(os.environ.get(
+#     "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
+# auth.set_access_token(os.environ.get("API_TOKEN"),
+#                       os.environ.get("API_SECRET"))
+
+# api = tweepy.API(auth)
 
 
 EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
@@ -48,6 +51,7 @@ def getImage():
     foreground = foreground.resize(
         (width, int(150*(height/width))))
     background.paste(foreground, (0, 0), mask=foreground)
+    background = background.resize((floor(background.size[0]*scale_factor), floor(background.size[1]*scale_factor)))
     background.save("main.png")
 
     return ImageTk.PhotoImage((background))
