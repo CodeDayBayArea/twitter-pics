@@ -25,7 +25,8 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 w1 = tk.Tk()
 w1.title("Sketchy")
-w1.geometry("480x320")
+w1.geometry("800x600")
+# w1.attributes('-fullscreen', True)
 label = tk.Label(w1)
 label.grid(row=0, column=1, sticky='nesw')
 cap = cv2.VideoCapture(0)
@@ -38,6 +39,7 @@ def getImage():
     grey_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(grey_img, (21, 21), 0)
     sketch = cv2.divide(grey_img, blur, scale=256.0)
+    # sketch = cv2.resize(sketch, (w1.winfo_width(), w1.winfo_height()-0), interpolation = cv2.INTER_AREA)
     cv2.imwrite("sketch.png", sketch)
 
     background = Image.open("sketch.png").convert("RGBA")
