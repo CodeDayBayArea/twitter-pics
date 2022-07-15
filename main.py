@@ -9,22 +9,14 @@ from PIL import Image, ImageTk
 import tkinter as tk
 from math import floor
 import imghdr
-load_dotenv()
+load_dot
 
-scale_factor = 0.58
+auth = tweepy.OAuthHandler(os.environ.get(
+    "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
+auth.set_access_token(os.environ.get("API_TOKEN"),
+                      os.environ.get("API_SECRET"))
 
-# auth = tweepy.OAuthHandler(os.environ.get(
-#     "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
-# auth.set_access_token(os.environ.get("API_TOKEN"),
-#                       os.environ.get("API_SECRET"))
-
-# api = tweepy.API(auth)
-
-
-EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
-TO_ADDRESS = os.environ.get("TO_ADDRESS")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-
+api = tweepy.API(auth)
 
 w1 = tk.Tk()
 w1.title("Sketchy")
@@ -67,25 +59,11 @@ def updateLabel():
 
 def postTweet():
     media = api.media_upload('./main.png')
-    api.update_status("CodeDay", media_ids=[media.media_id_string])
+    api.update_status("A person has appeared at #toorcamp", media_ids=[media.media_id_string])
 
 
 def printPhoto():
-    msg = EmailMessage()
-    msg['Subject'] = 'New Photo!'
-    msg['From'] = EMAIL_ADDRESS
-    msg['To'] = TO_ADDRESS
-    msg.set_content('Here is your new photo!')
-
-    with open("main.png", 'rb') as f:
-        file_data = f.read()
-        file_type = imghdr.what(f.name)
-    msg.add_attachment(file_data, maintype='image', subtype=file_type)
-
-    with smtplib.SMTP_SSL('smtp.mailgun.org', 465) as smtp:
-        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        smtp.send_message(msg)
-
+    os.startfile("main.png", "print")
 
 def showWindow():
 
