@@ -9,7 +9,7 @@ from PIL import Image, ImageTk
 import tkinter as tk
 from math import floor
 import imghdr
-load_dot
+load_dotenv()
 
 auth = tweepy.OAuthHandler(os.environ.get(
     "CONSUMER_KEY"), os.environ.get("CONSUMER_SECRET"))
@@ -26,6 +26,7 @@ label = tk.Label(w1)
 label.grid(row=0, column=1, sticky='nesw')
 cap = cv2.VideoCapture(0)
 
+scale_factor = 0.58
 
 def getImage():
     ret, frame = cap.read()
@@ -43,8 +44,8 @@ def getImage():
     foreground = foreground.resize(
         (width, int(150*(height/width))))
     background.paste(foreground, (0, 0), mask=foreground)
-    background = background.resize((floor(background.size[0]*scale_factor), floor(background.size[1]*scale_factor)))
-    background.save("main.png")
+    newBackground = background.resize((floor(background.size[0]*scale_factor), floor(background.size[1]*scale_factor)))
+    newBackground.save("main.png")
 
     return ImageTk.PhotoImage((background))
 
