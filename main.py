@@ -7,6 +7,7 @@ import cv2
 import time
 from PIL import Image, ImageTk
 import tkinter as tk
+import tkinter.font as font
 import imghdr
 load_dotenv()
 
@@ -25,7 +26,7 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 w1 = tk.Tk()
 w1.title("Sketchy")
-w1.geometry("480x320")
+w1.geometry("2560x1600")
 label = tk.Label(w1)
 label.grid(row=0, column=1, sticky='nesw')
 cap = cv2.VideoCapture(0)
@@ -86,12 +87,17 @@ def showWindow():
     for i in range(4):
         w1.columnconfigure(i, weight=1)
     w1.rowconfigure(1, weight=1)
-
-    bird = tk.Button(w1, text="Post to Twitter", command=postTweet)
+    myFont = font.Font(size=30)
+    bird = tk.Button(w1, height=50,
+                     text="Post to Twitter", command=postTweet)
     bird.grid(row=2, column=2, sticky='nesw')
+    bird["font"] = myFont
+    bird.pack()
 
-    retake = tk.Button(w1, text="Retake")
+    retake = tk.Button(w1, height=50, text="Retake")
     retake.grid(row=2, column=1, sticky='nesw')
+    retake["font"] = myFont
+    retake.pack()
 
     printer = tk.Button(w1, text="Print photo", command=printPhoto)
     printer.grid(row=2, column=1, sticky='nesw')
