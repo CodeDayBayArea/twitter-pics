@@ -8,6 +8,7 @@ import time
 from PIL import Image, ImageTk
 import tkinter as tk
 import tkinter.font as font
+from math import floor
 import imghdr
 load_dotenv()
 
@@ -18,12 +19,6 @@ auth.set_access_token(os.environ.get("API_TOKEN"),
 
 api = tweepy.API(auth)
 
-
-EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
-TO_ADDRESS = os.environ.get("TO_ADDRESS")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-
-
 w1 = tk.Tk()
 w1.title("Sketchy")
 w1.geometry("2560x1600")
@@ -31,6 +26,7 @@ label = tk.Label(w1)
 label.grid(row=0, column=1, sticky='nesw')
 cap = cv2.VideoCapture(0)
 
+scale_factor = 0.58
 
 def getImage():
     ret, frame = cap.read()
@@ -39,6 +35,7 @@ def getImage():
     grey_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(grey_img, (21, 21), 0)
     sketch = cv2.divide(grey_img, blur, scale=256.0)
+    # sketch = cv2.resize(sketch, (w1.winfo_width(), w1.winfo_height()-0), interpolation = cv2.INTER_AREA)
     cv2.imwrite("sketch.png", sketch)
 
     background = Image.open("sketch.png").convert("RGBA")
@@ -47,7 +44,8 @@ def getImage():
     foreground = foreground.resize(
         (width, int(150*(height/width))))
     background.paste(foreground, (0, 0), mask=foreground)
-    background.save("main.png")
+    newBackground = background.resize((floor(background.size[0]*scale_factor), floor(background.size[1]*scale_factor)))
+    newBackground.save("main.png")
 
     return ImageTk.PhotoImage((background))
 
@@ -62,25 +60,11 @@ def updateLabel():
 
 def postTweet():
     media = api.media_upload('./main.png')
-    api.update_status("CodeDay", media_ids=[media.media_id_string])
+    api.update_status("A person has appeared at #toorcamp", media_ids=[media.media_id_string])
 
 
 def printPhoto():
-    msg = EmailMessage()
-    msg['Subject'] = 'New Photo!'
-    msg['From'] = EMAIL_ADDRESS
-    msg['To'] = TO_ADDRESS
-    msg.set_content('Here is your new photo!')
-
-    with open("main.png", 'rb') as f:
-        file_data = f.read()
-        file_type = imghdr.what(f.name)
-    msg.add_attachment(file_data, maintype='image', subtype=file_type)
-
-    with smtplib.SMTP_SSL('smtp.mailgun.org', 465) as smtp:
-        smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        smtp.send_message(msg)
-
+    os.startfile("main.png", "print")
 
 def showWindow():
 
